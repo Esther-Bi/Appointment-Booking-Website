@@ -30,12 +30,11 @@ import doc12 from './doc12.png'
 import doc13 from './doc13.png'
 import doc14 from './doc14.png'
 import doc15 from './doc15.png'
-import Dermatologist from './Dermatologist.svg'
-import Gastroenterologist from './Gastroenterologist.svg'
-import General_physician from './General_physician.svg'
-import Gynecologist from './Gynecologist.svg'
-import Neurologist from './Neurologist.svg'
-import Pediatricians from './Pediatricians.svg'
+import Laser from './Laser.svg'
+import Manicure from './Manicure.svg'
+import Pedicure from './Pedicure.svg'
+import Facial_treatment from './Facial_treatment.svg'
+import Waxing from './Waxing.svg'
 
 
 export const assets = {
@@ -58,30 +57,26 @@ export const assets = {
     razorpay_logo
 }
 
-export const specialityData = [
+export const typeData = [
     {
-        speciality: 'General physician',
-        image: General_physician
+        type: 'Laser',
+        image: Laser
     },
     {
-        speciality: 'Gynecologist',
-        image: Gynecologist
+        type: 'Manicure',
+        image: Manicure
     },
     {
-        speciality: 'Dermatologist',
-        image: Dermatologist
+        type: 'Pedicure',
+        image: Pedicure
     },
     {
-        speciality: 'Pediatricians',
-        image: Pediatricians
+        type: 'Facial Treatment',
+        image: Facial_treatment
     },
     {
-        speciality: 'Neurologist',
-        image: Neurologist
-    },
-    {
-        speciality: 'Gastroenterologist',
-        image: Gastroenterologist
+        type: 'Waxing',
+        image: Waxing
     },
 ]
 
