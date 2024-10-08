@@ -9,6 +9,9 @@ export default {
       colors:{
         'primary':"#8FBC8F",
         'headerBG':"#fef5f0"
+      },
+      gridTemplateColumns:{
+        'auto':'repeat(auto-fill, minmax(200px, 1fr))'
       }
     },
   },
