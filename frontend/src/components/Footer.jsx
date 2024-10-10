@@ -13,8 +13,8 @@ const Footer = () => {
 
         {/* Center Section */}
         <div>
-            <p>COMPANY</p>
-            <ul>
+            <p className='text-xl font-medium mb-5'>COMPANY</p>
+            <ul className='flex flex-col gap-2 text-gray-600'>
                 <li>Home</li>
                 <li>About Us</li>
                 <li>Contact Us</li>
@@ -24,8 +24,8 @@ const Footer = () => {
 
         {/* Right Section */}
         <div>
-            <p>GET IN TOUCH</p>
-            <ul>
+            <p className='text-xl font-medium mb-5'>GET IN TOUCH</p>
+            <ul className='flex flex-col gap-2 text-gray-600'>
                 <li>+972-54-603-9616</li>
                 <li>estherbinnes@gmail.com</li>
             </ul>
@@ -35,7 +35,7 @@ const Footer = () => {
       {/* Copyright Text */}
       <div>
         <hr />
-        <p>Copyright 2024@ EY - All Right Reserved.</p>
+        <p className='py-5 text-sm text-center'>Copyright 2024@ EY - All Right Reserved.</p>
       </div>
     </div>
   )
