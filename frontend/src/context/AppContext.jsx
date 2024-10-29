@@ -4,8 +4,12 @@ import { services } from "../assets/assets";
 export const AppContext = createContext()
 
 const AppContextProvider = (props) => {
+
+    const currencySymbol = '₪'
+
     const value = {
-        services
+        services,
+        currencySymbol
     }
 
     return (
