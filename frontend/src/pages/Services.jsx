@@ -6,6 +6,7 @@ const Services = () => {
 
   const { type } = useParams()
   const [filterSer, setFilterSer] = useState([])
+  const [showFilter,setShowFilter] = useState(false)
   const navigate = useNavigate()
   const { services } = useContext(AppContext)
 
@@ -24,8 +25,9 @@ const Services = () => {
   return (
     <div>
       <p className='text-gray-600'>Browse through the services type</p>
-      <div className='flex flex-col sm:flex-row w-[80vw] gap-5 mt-5'>
-        <div className='flex flex-col gap-4 text-sm text-gray-600'>
+      <div className='flex flex-col sm:flex-row items-start gap-5 mt-5'>
+        <button className={`py-1 px-3 border rounded text-sm transition-all sm:hidden ${showFilter ? 'bg-primary text-white' : ''}`} onClick={()=>setShowFilter(prev => !prev)}>Filters</button>
+        <div className={`flex-col gap-4 text-sm text-gray-600 ${showFilter ? 'flex' : 'hidden sm:flex'}`}>
           <p onClick={()=> type === 'Laser' ? navigate('/services') : navigate('/services/Laser')} className={`w-[94vw] sm:w-auto pl-3 py-1.5 pr-16 border border-gray-300 rounded transition-all cursor-pointer ${type === "Laser" ? "bg-primary text-white " : ""}}`}>Laser</p>
           <p onClick={()=> type === 'Manicure' ? navigate('/services') : navigate('/services/Manicure')} className={`w-[94vw] sm:w-auto pl-3 py-1.5 pr-16 border border-gray-300 rounded transition-all cursor-pointer ${type === "Manicure" ? "bg-primary text-white " : ""}}`}>Manicure</p>
           <p onClick={()=> type === 'Pedicure' ? navigate('/services') : navigate('/services/Pedicure')} className={`w-[94vw] sm:w-auto pl-3 py-1.5 pr-16 border border-gray-300 rounded transition-all cursor-pointer ${type === "Pedicure" ? "bg-primary text-white " : ""}}`}>Pedicure</p>
