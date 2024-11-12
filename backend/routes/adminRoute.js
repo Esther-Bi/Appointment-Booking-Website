@@ -1,9 +1,12 @@
 import express from 'express'
-import { addService } from '../controllers/adminController.js'
+import { addService,loginAdmin } from '../controllers/adminController.js'
 import upload from '../middlewares/multer.js'
+import authAdmin from '../middlewares/authAdmin.js'
 
 const adminRouter = express.Router()
 
-adminRouter.post('/add-service', addService)
+adminRouter.post('/add-service', authAdmin, addService)
+adminRouter.post('/login', loginAdmin)
+
 
 export default adminRouter
