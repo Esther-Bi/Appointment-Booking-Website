@@ -4,16 +4,15 @@ import jwt from 'jsonwebtoken'
 // API for adding service
 const addService = async (req,res) => {
     try{
-        const { name, type, about, available, fees } = req.body
-        // checking for all datat to add service
-        if (!name || !type || !about || !available || !fees){
+        const { name, type, about, fees } = req.body
+        // checking for all data to add service
+        if (!name || !type || !about || !fees){
             return res.json({success:false,message:"Missimg Details"})
         }
         const serviceData = {
             name,
             type,
             about,
-            available,
             fees,
             date:Date.now()
         }
@@ -42,4 +41,15 @@ const loginAdmin = async (req,res) => {
     }
 }
 
-export {addService,loginAdmin}
+// API to get all services list for admin panel
+const allServices = async (req,res) => {
+    try {
+        const services = await serviceModel.find({}).select()
+        res.json({success:true,services})
+    } catch (error) {
+        console.log(error)
+        res.json({success:false,message:error.message})
+    }
+}
+
+export {addService,loginAdmin,allServices}
