@@ -1,5 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import axios from 'axios'
+import {toast} from 'react-toastify'
+import {typeData} from "../assets/assets"
 
 export const AppContext = createContext()
 
@@ -18,14 +20,26 @@ const AppContextProvider = (props) => {
         try {
             const {data} = await axios.get(backendUrl + '/api/service/list')
             if (data.success) {
-                setServices(data.services)
+                const servicesWithImages = data.services.map((item) => {
+                        const typeObject = typeData.find(e => e.type === item.type);
+                        return {
+                          ...item,
+                          image: typeObject ? typeObject.image : null,  // Add the image or null if not found
+                        };
+                      });
+                setServices(servicesWithImages)
+            } else {
+                toast.error(data.message)
             }
         } catch (error) {
-
+            console.log(error)
+            toast.error(error.message)
         }
     }
 
-    useEffect()
+    useEffect(()=>{
+        getServicesData()
+    },[])
 
     return (
         <AppContext.Provider value={value}>
