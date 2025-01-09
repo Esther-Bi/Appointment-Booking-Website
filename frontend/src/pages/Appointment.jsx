@@ -1,14 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { AppContext } from '../context/AppContext'
 import { assets } from '../assets/assets'
 import RelatedServices from '../components/RelatedServices'
+import { toast } from 'react-toastify'
+import axios from 'axios'
 
 const Appointment = () => {
 
   const {serId} = useParams()
-  const {services, currencySymbol} = useContext(AppContext)
+  const {services, currencySymbol, backendUrl, token, getServicesData} = useContext(AppContext)
   const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
+
+  const navigate = useNavigate()
 
   const [serInfo,setSerInfo] = useState(null)
   const [serSlots,setSerSlots] = useState([])
@@ -46,14 +50,49 @@ const Appointment = () => {
 
       while (currDate < endTime) {
         let formattedTime = currDate.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})
-        timeSlots.push({
-          datetime: new Date(currDate),
-          time: formattedTime
-        })
+        
+        let day = currDate.getDate()
+        let month = currDate.getMonth()+1
+        let year = currDate.getFullYear()
+        const slotDate = day + "_" + month + "_" + year
+        const slotTime = formattedTime
+        const isSlotAvailable = serInfo.slots_booked[slotDate] && serInfo.slots_booked[slotDate].includes(slotTime) ? false : true
+        if (isSlotAvailable) {
+          timeSlots.push({
+            datetime: new Date(currDate),
+            time: formattedTime
+          })
+        }
+        
         currDate.setMinutes(currDate.getMinutes() + 30)
       }
 
       setSerSlots(prev => ([...prev,timeSlots]))
+    }
+  }
+
+  const bookAppointment = async () => {
+    if (!token) {
+      toast.warn('Login to book appointment')
+      return navigate('/login')
+    }
+    try {
+      const date = serSlots[slotIndex][0].datetime
+      let day = date.getDate()
+      let month = date.getMonth()+1
+      let year = date.getFullYear()
+      const slotDate = day + "_" + month + "_" + year
+      const {data} = await axios.post(backendUrl + '/api/user/book-appointment', {serId,slotDate,slotTime}, {headers:{token}})
+      if (data.success) {
+        toast.success(data.message)
+        getServicesData()
+        navigate('/my-appointments')
+      } else {
+        toast.error(data.message)
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error(error.mwssege)
     }
   }
 
@@ -116,7 +155,7 @@ const Appointment = () => {
             </p>
           ))}
         </div>
-        <button className='bg-primary text-white text-sm font-light px-14 py-3 rounded-full my-6'>Book This Appointment</button>
+        <button onClick={bookAppointment} className='bg-primary text-white text-sm font-light px-14 py-3 rounded-full my-6'>Book This Appointment</button>
       </div>
       {/*Listing Related Services*/}
       <RelatedServices serId={serId} type={serInfo.type} />

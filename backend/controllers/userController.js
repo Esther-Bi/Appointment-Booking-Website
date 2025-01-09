@@ -2,6 +2,8 @@ import validator from 'validator'
 import bcrypt from 'bcrypt'
 import userModel from '../models/userModel.js'
 import jwt from 'jsonwebtoken'
+import serviceModel from '../models/serviceModel.js'
+import appointmentModel from '../models/appointmentModel.js'
 
 // API to register user
 const registerUser = async (req,res) => {
@@ -85,4 +87,57 @@ const updateProfile = async (req,res) => {
     }
 }
 
-export {registerUser , loginUser , getProfile , updateProfile}
+// API to book appointment
+const bookAppointment = async (req,res) => {
+    try {
+        const {userId, serId, slotDate, slotTime} = req.body
+        const serData = await serviceModel.findById(serId)
+        if (!serData.available) {
+            return res.json({success:false,message:'Service not available'})
+        }
+        let slots_booked = serData.slots_booked
+        if (slots_booked[slotDate]) {
+            if (slots_booked[slotDate].includes(slotTime)) {
+                return res.json({success:false,message:'Slot not available'})
+            } else {
+                slots_booked[slotDate].push(slotTime)
+            }
+        } else {
+            slots_booked[slotDate] = []
+            slots_booked[slotDate].push(slotTime)
+        }
+        const userData = await userModel.findById(userId).select('-password')
+        delete serData.slots_booked
+        const appointmentData = {
+            userId,
+            serId,
+            userData,
+            serData,
+            amount: serData.fees,
+            slotTime,
+            slotDate,
+            date: Date.now()
+        }
+        const newAppointment = new appointmentModel(appointmentData)
+        await newAppointment.save()
+        await serviceModel.findByIdAndUpdate(serId,{slots_booked})
+        res.json({success:true,message:'Appointment Booked'})
+    } catch (error) {
+        console.log(error)
+        res.json({success:false,message:error.message})
+    }
+}
+
+// API to get user appointments for frontend
+const listAppointments = async (req,res) => {
+    try {
+        const {userId} = req.body
+        const appointments = await appointmentModel.find({userId})
+        res.json({success:true,appointments})
+    } catch (error) {
+        console.log(error)
+        res.json({success:false,message:error.message})
+    }
+}
+
+export {registerUser , loginUser , getProfile , updateProfile , bookAppointment , listAppointments}
