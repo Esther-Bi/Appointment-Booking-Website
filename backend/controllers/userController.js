@@ -161,4 +161,22 @@ const cancelAppointment = async (req,res) => {
     }
 }
 
-export {registerUser , loginUser , getProfile , updateProfile , bookAppointment , listAppointments , cancelAppointment}
+// API to pay for an appointment
+const payment = async (req,res) => {
+    try {
+        const {appointmentId} = req.body
+        const appointmentData = await appointmentModel.findById(appointmentId)
+        if (!appointmentData || appointmentData.cancelled) {
+            return res.json({success:false,message:"Appointment cancelled or not found"})
+        }
+        await appointmentModel.findByIdAndUpdate(appointmentId, {payment: true})
+        res.json({success:true, message: 'Successfully paid'})
+        
+    } catch (error) {
+        console.log(error)
+        res.json({success:false,message:error.message})
+    }
+    
+}
+
+export {registerUser , loginUser , getProfile , updateProfile , bookAppointment , listAppointments , cancelAppointment, payment}
