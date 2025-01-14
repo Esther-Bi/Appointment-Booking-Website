@@ -5,12 +5,14 @@ export const AppContext = createContext()
 const AppContextProvider = (props) => {
 
     const currency = '₪'
+    
     const calculateAge = (birthday) => {
         const today = new Date()
         const birthDate = new Date(birthday)
         let age = today.getFullYear() - birthDate.getFullYear()
-        return (today.getMonth >= birthDate.getMonth() ? age : age-1)
+        return (today.getMonth() >= birthDate.getMonth() ? age : age-1)
     }
+    
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     const slotDateFormat = (slotDate) => {
         const dateArray = slotDate.split('_')

@@ -121,7 +121,7 @@ const Appointment = () => {
           <p className='text-2xl font-medium text-gray-900'>{serInfo.name}</p>
           <div className='flex items-center gap-2 text-sm mt-1 text-gray-600'>
             <p>{serInfo.type}</p>
-            <button className='py-0.5 px-2 border text-xs rounded-full'>{serInfo._id}</button>
+            <button className='py-0.5 px-2 border text-xs rounded-full'>{serInfo.available ? 'Available' : 'Not Available'}</button>
           </div>
           {/*Service About*/}
           <div>

@@ -1,6 +1,5 @@
 import express from 'express'
-import { addService,allServices,loginAdmin,appointmentsAdmin,appointmentCancelAdmin,adminDashboard } from '../controllers/adminController.js'
-import upload from '../middlewares/multer.js'
+import { addService,allServices,loginAdmin,appointmentsAdmin,appointmentCancelAdmin,appointmentCompleteAdmin,adminDashboard } from '../controllers/adminController.js'
 import authAdmin from '../middlewares/authAdmin.js'
 import { changeAvailablity } from '../controllers/serviceController.js'
 
@@ -11,6 +10,7 @@ adminRouter.post('/login', loginAdmin)
 adminRouter.post('/all-services', authAdmin, allServices)
 adminRouter.post('/change-availability', authAdmin, changeAvailablity)
 adminRouter.post('/cancel-appointment', authAdmin, appointmentCancelAdmin)
+adminRouter.post('/complete-appointment', authAdmin, appointmentCompleteAdmin)
 
 adminRouter.get('/appointments', authAdmin, appointmentsAdmin)
 adminRouter.get('/dashboard', authAdmin, adminDashboard)

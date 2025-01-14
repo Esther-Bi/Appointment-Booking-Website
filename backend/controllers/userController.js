@@ -92,6 +92,10 @@ const bookAppointment = async (req,res) => {
     try {
         const {userId, serId, slotDate, slotTime} = req.body
         const serData = await serviceModel.findById(serId)
+        const userData = await userModel.findById(userId).select('-password')
+        if (userData.birthday === 'Not Selected') {
+            return res.json({success:false,message:'You should update your profile before booking'})
+        }
         if (!serData.available) {
             return res.json({success:false,message:'Service not available'})
         }
@@ -106,7 +110,6 @@ const bookAppointment = async (req,res) => {
             slots_booked[slotDate] = []
             slots_booked[slotDate].push(slotTime)
         }
-        const userData = await userModel.findById(userId).select('-password')
         delete serData.slots_booked
         const appointmentData = {
             userId,

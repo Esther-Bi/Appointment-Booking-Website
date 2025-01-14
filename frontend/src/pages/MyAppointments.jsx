@@ -95,8 +95,9 @@ const MyAppointments = () => {
             <div className='flex flex-col gap-2 justify-end'>
               {!item.cancelled && !item.payment && <button onClick={()=>appointmentPayment(item._id)} className='text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-green-600 hover:text-white transition-all duration-300'>Pay Online</button>}
               {!item.cancelled && !item.payment && <button onClick={()=>cancelAppointment(item._id)} className='text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-red-600 hover:text-white transition-all duration-300'>Cancel Appointment</button>}
-              {item.cancelled && <button className='sm:min-w-48 py-2 border border-red-500 rounded text-red-500'>Appointment Cancelled</button>}
-              {!item.cancelled && item.payment && <button className='sm:min-w-48 py-2 border rounded text-stone-500 bg-indigo-50'>Appointment Paid</button>}
+              {item.cancelled && <button className='sm:min-w-48 py-2 border border-red-500 rounded text-red-500'>Cancelled</button>}
+              {!item.cancelled && !item.isCompleted && item.payment && <button className='sm:min-w-48 py-2 border rounded text-stone-500 bg-indigo-50'>Paid</button>}
+              {item.isCompleted && <button className='sm:min-w-48 py-2 border rounded border-green-500 text-green-500'>Completed</button>}
             </div>
           </div>
         ))}

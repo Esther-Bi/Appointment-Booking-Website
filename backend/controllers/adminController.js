@@ -83,6 +83,25 @@ const appointmentCancelAdmin = async (req,res) => {
     }
 }
 
+// API for appointment completion
+const appointmentCompleteAdmin = async (req,res) => {
+    try {
+        const {appointmentId} = req.body
+        const appData = await appointmentModel.findById(appointmentId)
+        if (!appData.payment) {
+            return res.json({success:false,message:'Patient did not pay yet'})
+        }
+        if (appData.cancelled) {
+            return res.json({success:false,message:'Cannot complete cancelled appointment'})
+        }
+        await appointmentModel.findByIdAndUpdate(appointmentId,{isCompleted:true})
+        res.json({success:true,message:'Appointment Completed'})
+    } catch (error) {
+        console.log(error)
+        res.json({success:false,message:error.message})
+    }
+}
+
 // API to get dashboard data for admin panel
 const adminDashboard = async (req,res) => {
     try {
@@ -102,4 +121,4 @@ const adminDashboard = async (req,res) => {
     }
 }
 
-export {addService,loginAdmin,allServices,appointmentsAdmin,appointmentCancelAdmin,adminDashboard}
+export {addService,loginAdmin,allServices,appointmentsAdmin,appointmentCancelAdmin,appointmentCompleteAdmin,adminDashboard}
